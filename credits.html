@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Felix BL — Credits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne+Mono&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #191919;
+    --border: #2a2a2a;
+    --text: #f0ede8;
+    --muted: #5a5750;
+    --muted2: #7a7570;
+    --accent: #c94a1a;
+    --accent-dim: rgba(201,74,26,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+  }
+  .cursor.large { width: 18px; height: 18px; }
+
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(15,15,15,0.85);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  }
+
+  .logo { font-size: 1rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+  .logo span { color: var(--accent); }
+
+  nav { display: flex; align-items: center; gap: 32px; }
+  nav a {
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--muted2); text-decoration: none; transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+  nav a.active { color: var(--accent); }
+  .nav-cta {
+    color: var(--accent) !important;
+    border: 1px solid rgba(201,74,26,0.35); padding: 8px 20px; border-radius: 4px;
+  }
+  .nav-cta:hover { background: var(--accent-dim) !important; border-color: var(--accent) !important; }
+
+  .page-hero {
+    padding: 140px 40px 64px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-eyebrow {
+    font-family: 'Syne Mono', monospace; font-size: 0.66rem;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 12px; margin-bottom: 28px;
+  }
+  .page-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--muted); }
+
+  .page-title {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; color: var(--text);
+  }
+  .page-title em {
+    font-family: 'Lora', serif; font-style: italic; font-weight: 400; color: var(--accent);
+  }
+
+  .page-sub {
+    margin-top: 32px; font-size: 0.86rem; color: var(--muted2);
+    line-height: 1.6; max-width: 480px;
+  }
+
+  .nomination-badge {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 24px;
+    background: var(--accent-dim); border: 1px solid rgba(201,74,26,0.3);
+    border-radius: 4px; padding: 10px 18px;
+    font-family: 'Syne Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+  }
+  .nomination-badge::before { content: '★'; }
+
+  .credits-section { padding: 80px 40px; }
+  .credits-year-group { margin-bottom: 64px; }
+
+  .year-label {
+    font-family: 'Syne Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .year-label span { color: var(--text); font-size: 0.9rem; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+  .credits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .credit-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s; cursor: none;
+  }
+  .credit-card:hover { border-color: var(--muted); transform: translateY(-2px); }
+
+  .credit-poster {
+    width: 100%; aspect-ratio: 2/3;
+    background: #1a1a1a; position: relative; overflow: hidden;
+  }
+
+  .credit-poster img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .credit-card:hover .credit-poster img { transform: scale(1.04); }
+
+  /* Fallback placeholder shown when no image */
+  .poster-fallback {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1c1c1c 0%, #141414 100%);
+    position: absolute; inset: 0;
+  }
+
+  .poster-fallback-title {
+    font-size: 0.7rem; font-weight: 700; color: var(--muted);
+    text-align: center; padding: 0 12px; line-height: 1.3;
+  }
+
+  .poster-fallback-year {
+    font-family: 'Syne Mono', monospace; font-size: 0.56rem;
+    letter-spacing: 0.1em; color: var(--border);
+  }
+
+  .rating-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--border);
+  }
+  .rating-fill { height: 100%; background: var(--accent); }
+
+  .credit-info { padding: 14px 14px 16px; }
+
+  .credit-title {
+    font-size: 0.88rem; font-weight: 700; color: var(--text);
+    line-height: 1.25; margin-bottom: 6px; letter-spacing: -0.01em;
+  }
+
+  .credit-role {
+    font-family: 'Syne Mono', monospace; font-size: 0.56rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+  }
+
+  .credit-meta {
+    font-size: 0.72rem; color: var(--muted2);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .credit-meta .dot { color: var(--muted); font-size: 0.5rem; }
+
+  .credit-badge {
+    display: inline-block; font-family: 'Syne Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border: 1px solid var(--border); color: var(--muted2); padding: 2px 7px; border-radius: 2px;
+  }
+  .credit-badge.tv { border-color: rgba(126,181,160,0.4); color: #7eb5a0; }
+  .credit-badge.film { border-color: rgba(201,74,26,0.3); color: var(--accent); }
+  .credit-badge.upcoming { border-color: rgba(232,197,71,0.3); color: #e8c547; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 28px 40px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  .footer-name { font-size: 0.85rem; font-weight: 800; letter-spacing: -0.02em; color: var(--muted2); }
+  .footer-socials { display: flex; gap: 20px; }
+  .footer-socials a {
+    font-family: 'Syne Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-socials a:hover { color: var(--accent); }
+  .footer-copy { font-family: 'Syne Mono', monospace; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--muted); }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    header { padding: 16px 24px; }
+    nav a:not(.nav-cta) { display: none; }
+    .page-hero { padding: 100px 24px 48px; }
+    .credits-section { padding: 48px 24px; }
+    .credits-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    footer { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<header>
+  <a href="index.html" class="logo">Felix<span>BL</span></a>
+  <nav>
+    <a href="index.html#work">Work</a>
+    <a href="credits.html" class="active">Credits</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact" class="nav-cta">Contact</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <p class="page-eyebrow">Filmography</p>
+  <h1 class="page-title">Film &amp;<br><em>Credits</em></h1>
+  <p class="page-sub">Visual effects work spanning feature films, streaming series, and short-form content — from digital compositing to compositing supervision.</p>
+  <div class="nomination-badge">1 Industry Nomination</div>
+</div>
+
+<div class="credits-section">
+
+  <!-- 2025–2026 -->
+  <div class="credits-year-group reveal">
+    <div class="year-label"><span>2025 – 2026</span></div>
+    <div class="credits-grid">
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <div class="poster-fallback"><span class="poster-fallback-title">Mayday</span><span class="poster-fallback-year">2026</span></div>
+          <div class="rating-bar"><div class="rating-fill" style="width:0%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor · Raynault VFX</div>
+          <div class="credit-title">Mayday</div>
+          <div class="credit-meta"><span>2026</span><span class="dot">·</span><span class="credit-badge upcoming">Upcoming</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/mickey-17.jpg" alt="Mickey 17">
+          <div class="rating-bar"><div class="rating-fill" style="width:67%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositing Supervisor</div>
+          <div class="credit-title">Mickey 17</div>
+          <div class="credit-meta"><span>2025</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/percy-jackson.jpg" alt="Percy Jackson and the Olympians">
+          <div class="rating-bar"><div class="rating-fill" style="width:70%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor · Raynault VFX</div>
+          <div class="credit-title">Percy Jackson and the Olympians</div>
+          <div class="credit-meta"><span>2025–2026</span><span class="dot">·</span><span class="credit-badge tv">TV · 4 ep.</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/invasion.jpg" alt="Invasion">
+          <div class="rating-bar"><div class="rating-fill" style="width:62%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor · Raynault VFX</div>
+          <div class="credit-title">Invasion</div>
+          <div class="credit-meta"><span>2025</span><span class="dot">·</span><span class="credit-badge tv">TV · 9 ep.</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/sandman.jpg" alt="The Sandman">
+          <div class="rating-bar"><div class="rating-fill" style="width:76%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor · Raynault VFX</div>
+          <div class="credit-title">The Sandman</div>
+          <div class="credit-meta"><span>2025</span><span class="dot">·</span><span class="credit-badge tv">TV · 1 ep.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2024 -->
+  <div class="credits-year-group reveal">
+    <div class="year-label"><span>2024</span></div>
+    <div class="credits-grid">
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/dune-prophecy.jpg" alt="Dune: Prophecy">
+          <div class="rating-bar"><div class="rating-fill" style="width:73%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor · Raynault VFX</div>
+          <div class="credit-title">Dune: Prophecy</div>
+          <div class="credit-meta"><span>2024</span><span class="dot">·</span><span class="credit-badge tv">TV · 6 ep.</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/rings-of-power.jpg" alt="The Rings of Power">
+          <div class="rating-bar"><div class="rating-fill" style="width:69%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">The Rings of Power</div>
+          <div class="credit-meta"><span>2024</span><span class="dot">·</span><span class="credit-badge tv">TV · 3 ep.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2022–2023 -->
+  <div class="credits-year-group reveal">
+    <div class="year-label"><span>2022 – 2023</span></div>
+    <div class="credits-grid">
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/top-gun-maverick.jpg" alt="Top Gun: Maverick">
+          <div class="rating-bar"><div class="rating-fill" style="width:82%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Lead Compositor · Method Studios</div>
+          <div class="credit-title">Top Gun: Maverick</div>
+          <div class="credit-meta"><span>2022</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/thor-love-and-thunder.jpg" alt="Thor: Love and Thunder">
+          <div class="rating-bar"><div class="rating-fill" style="width:61%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Lead Compositor</div>
+          <div class="credit-title">Thor: Love and Thunder</div>
+          <div class="credit-meta"><span>2022</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/gilded-age.jpg" alt="The Gilded Age">
+          <div class="rating-bar"><div class="rating-fill" style="width:81%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositing Supervisor</div>
+          <div class="credit-title">The Gilded Age</div>
+          <div class="credit-meta"><span>2023</span><span class="dot">·</span><span class="credit-badge tv">TV · 2 ep.</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/peter-pan-wendy.jpg" alt="Peter Pan & Wendy">
+          <div class="rating-bar"><div class="rating-fill" style="width:44%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Lead Compositor</div>
+          <div class="credit-title">Peter Pan &amp; Wendy</div>
+          <div class="credit-meta"><span>2023</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2018–2021 -->
+  <div class="credits-year-group reveal">
+    <div class="year-label"><span>2018 – 2021</span></div>
+    <div class="credits-grid">
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/loki.jpg" alt="Loki">
+          <div class="rating-bar"><div class="rating-fill" style="width:82%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Visual Effects</div>
+          <div class="credit-title">Loki</div>
+          <div class="credit-meta"><span>2021</span><span class="dot">·</span><span class="credit-badge tv">TV · 1 ep.</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/men-in-black-international.jpg" alt="Men in Black: International">
+          <div class="rating-bar"><div class="rating-fill" style="width:56%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Lead Compositor</div>
+          <div class="credit-title">Men in Black: International</div>
+          <div class="credit-meta"><span>2019</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/rim-of-the-world.jpg" alt="Rim of the World">
+          <div class="rating-bar"><div class="rating-fill" style="width:53%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Lead Compositor</div>
+          <div class="credit-title">Rim of the World</div>
+          <div class="credit-meta"><span>2019</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/avengers-infinity-war.jpg" alt="Avengers: Infinity War">
+          <div class="rating-bar"><div class="rating-fill" style="width:84%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">Avengers: Infinity War</div>
+          <div class="credit-meta"><span>2018</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/predator.jpg" alt="The Predator">
+          <div class="rating-bar"><div class="rating-fill" style="width:53%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Lead Compositor</div>
+          <div class="credit-title">The Predator</div>
+          <div class="credit-meta"><span>2018</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/pacific-rim-uprising.jpg" alt="Pacific Rim: Uprising">
+          <div class="rating-bar"><div class="rating-fill" style="width:56%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Visual Effects Artist</div>
+          <div class="credit-title">Pacific Rim: Uprising</div>
+          <div class="credit-meta"><span>2018</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2015–2017 -->
+  <div class="credits-year-group reveal">
+    <div class="year-label"><span>2015 – 2017</span></div>
+    <div class="credits-grid">
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/blade-runner-2049.jpg" alt="Blade Runner 2049">
+          <div class="rating-bar"><div class="rating-fill" style="width:80%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">Blade Runner 2049</div>
+          <div class="credit-meta"><span>2017</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/thor-ragnarok.jpg" alt="Thor: Ragnarok">
+          <div class="rating-bar"><div class="rating-fill" style="width:79%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">Thor: Ragnarok</div>
+          <div class="credit-meta"><span>2017</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/ghost-in-the-shell.jpg" alt="Ghost in the Shell">
+          <div class="rating-bar"><div class="rating-fill" style="width:63%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">Ghost in the Shell</div>
+          <div class="credit-meta"><span>2017</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/stranger-things.jpg" alt="Stranger Things">
+          <div class="rating-bar"><div class="rating-fill" style="width:86%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositor · Atomic Fiction</div>
+          <div class="credit-title">Stranger Things</div>
+          <div class="credit-meta"><span>2017</span><span class="dot">·</span><span class="credit-badge tv">TV · 3 ep.</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/rogue-one.jpg" alt="Rogue One: A Star Wars Story">
+          <div class="rating-bar"><div class="rating-fill" style="width:78%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">Rogue One: A Star Wars Story</div>
+          <div class="credit-meta"><span>2016</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/deadpool.jpg" alt="Deadpool">
+          <div class="rating-bar"><div class="rating-fill" style="width:80%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">Deadpool</div>
+          <div class="credit-meta"><span>2016</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/x-men-apocalypse.jpg" alt="X-Men: Apocalypse">
+          <div class="rating-bar"><div class="rating-fill" style="width:68%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">X-Men: Apocalypse</div>
+          <div class="credit-meta"><span>2016</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/the-revenant.jpg" alt="The Revenant">
+          <div class="rating-bar"><div class="rating-fill" style="width:80%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Digital Compositor</div>
+          <div class="credit-title">The Revenant</div>
+          <div class="credit-meta"><span>2015</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/the-walk.jpg" alt="The Walk">
+          <div class="rating-bar"><div class="rating-fill" style="width:73%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositor</div>
+          <div class="credit-title">The Walk</div>
+          <div class="credit-meta"><span>2015</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/cinderella.jpg" alt="Cinderella">
+          <div class="rating-bar"><div class="rating-fill" style="width:69%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositor</div>
+          <div class="credit-title">Cinderella</div>
+          <div class="credit-meta"><span>2015</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2013–2014 -->
+  <div class="credits-year-group reveal">
+    <div class="year-label"><span>2013 – 2014</span></div>
+    <div class="credits-grid">
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/godzilla.jpg" alt="Godzilla">
+          <div class="rating-bar"><div class="rating-fill" style="width:64%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositor</div>
+          <div class="credit-title">Godzilla</div>
+          <div class="credit-meta"><span>2014</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/robocop.jpg" alt="RoboCop">
+          <div class="rating-bar"><div class="rating-fill" style="width:61%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositor</div>
+          <div class="credit-title">RoboCop</div>
+          <div class="credit-meta"><span>2014</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/night-at-the-museum.jpg" alt="Night at the Museum: Secret of the Tomb">
+          <div class="rating-bar"><div class="rating-fill" style="width:62%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositor</div>
+          <div class="credit-title">Night at the Museum: Secret of the Tomb</div>
+          <div class="credit-meta"><span>2014</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+      <div class="credit-card">
+        <div class="credit-poster">
+          <img src="images/posters/riddick.jpg" alt="Riddick">
+          <div class="rating-bar"><div class="rating-fill" style="width:64%"></div></div>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Compositor · Oblique FX</div>
+          <div class="credit-title">Riddick</div>
+          <div class="credit-meta"><span>2013</span><span class="dot">·</span><span class="credit-badge film">Film</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-name">Felix BL</span>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/dessinclandestin" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/in/f%C3%A9lix-b-b06b6476/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://vimeo.com" target="_blank" rel="noopener">Vimeo</a>
+    <a href="mailto:felixblafontaine@gmail.com">Email</a>
+  </div>
+  <span class="footer-copy">© 2026</span>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .credit-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('large'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('large'));
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
