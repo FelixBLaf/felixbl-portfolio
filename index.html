@@ -83,9 +83,12 @@
 
   .hero-main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: 0.6fr 1.8fr;
+    gap: 48px;
     align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .hero-left { display: flex; flex-direction: column; justify-content: center; }
@@ -589,7 +592,8 @@
 <div class="about reveal" id="about" style="margin-top:80px; margin-bottom:80px;">
   <div class="about-inner">
     <div class="about-img-col">
-      <span class="about-img-placeholder">Photo placeholder</span>
+      <img src="images/dessinclandestin/queue1.jpg" alt="Dessin Clandestin" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="about-img-placeholder" style="display:none;">Photo</span>
       <span class="about-location">Montréal, QC</span>
     </div>
     <div class="about-content">
